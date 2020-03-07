@@ -1,0 +1,51 @@
+﻿<Window x:Class="Bank_ClientApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Bank_ClientApp"
+        mc:Ignorable="d"
+        Title="GreyPine Client Application" Height="450" Width="800" Loaded="Window_Loaded" Icon="Resources/UI/Logos/GreyPine_Icon_x64.ico" ResizeMode="CanMinimize" ShowInTaskbar="True" Visibility="Visible">
+    <Grid Background="#FFCE8D00">
+        <Image x:Name="firstLogoImage" HorizontalAlignment="Center" Height="250" Margin="0" VerticalAlignment="Center" Width="250" Source="Resources/UI/Logos/GreyPine_Logo.png" Visibility="Hidden">
+            <Image.Triggers>
+                <EventTrigger RoutedEvent="Image.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard Name="firstLogoStoryBoard">
+                            <DoubleAnimation
+                                    Storyboard.TargetName="firstLogoImage" 
+                                    Storyboard.TargetProperty="Opacity"
+                                    From="1.0" To="0.0" Duration="0:0:2" 
+                                    AutoReverse="False" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Image.Triggers>
+        </Image>
+        <Label x:Name="connectionStatusLabel" Content="Connecting to server..." HorizontalAlignment="Right" Margin="0,0,22,24" VerticalAlignment="Bottom" Width="207" Visibility="Hidden" FontSize="20" FontFamily="Garamond" Background="{x:Null}" Foreground="#FF5F5A43" FontWeight="Bold"/>
+        <Grid Name="logInGrid" HorizontalAlignment="Center" Height="135" Margin="194,153,208,133" VerticalAlignment="Center" Width="392" Visibility="Hidden">
+            <TextBox x:Name="loginBox" Height="28" TextWrapping="Wrap" Text="Login" VerticalAlignment="Top" Margin="100,7,5,0" Background="{x:Null}" BorderBrush="#FF5F5A43" Foreground="#FF5F5A43" SelectionBrush="#FFFFAF00" VerticalContentAlignment="Center" FontFamily="Garamond" FontWeight="Bold" FontSize="14"/>
+            <TextBox x:Name="passwordBox" Height="27" Margin="100,40,5,0" TextWrapping="Wrap" Text="Password" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="#FF5F5A43" Foreground="#FF5F5A43" SelectionBrush="#FFFFAF00" VerticalContentAlignment="Center" FontFamily="Garamond" FontWeight="Bold" FontSize="14"/>
+            <Label x:Name="loginLabel" Content="Login" VerticalAlignment="Top" HorizontalAlignment="Left" Width="95" Height="30" FontFamily="Garamond" Background="{x:Null}" Foreground="#FF5F5A43" FontWeight="Bold" FontSize="18" Margin="5,5,0,0"/>
+            <Label x:Name="passwordLabel" Content="Password" VerticalAlignment="Top" HorizontalAlignment="Left" Width="95" Height="32" FontFamily="Garamond" Background="{x:Null}" Foreground="#FF5F5A43" FontWeight="Bold" Margin="5,35,0,0" FontSize="18"/>
+            <Button x:Name="signInButton" Content="Sign In" Margin="0,72,5,0" VerticalAlignment="Top" FontFamily="Garamond" FontWeight="Bold" Foreground="#FF5F5A43" Background="{x:Null}" BorderBrush="#FF5F5A43" Click="SignInButton_Click" HorizontalAlignment="Right" Width="142" Height="25" FontSize="16"/>
+            <Button x:Name="signUpButton" Content="Sign Up" Margin="100,72,0,0" VerticalAlignment="Top" FontFamily="Garamond" FontWeight="Bold" Foreground="#FF5F5A43" Background="{x:Null}" BorderBrush="#FF5F5A43" HorizontalAlignment="Left" Width="142" RenderTransformOrigin="0.5,0.5" Height="25" FontSize="16" Click="SignUpButton_Click"/>
+            <Label x:Name="wrongDataLabel" Content="Wrong Login or Password!" Margin="100,102,5,0" VerticalAlignment="Top" FontFamily="Garamond" Background="{x:Null}" Foreground="#FF703C3C" FontWeight="Bold" HorizontalContentAlignment="Center" Visibility="Hidden" FontSize="16"/>
+        </Grid>
+        <Grid Name="signUpGrid" HorizontalAlignment="Center" Height="232" Margin="201,104,201,85" VerticalAlignment="Center" Width="392" Visibility="Visible">
+            <TextBox x:Name="signUp_LoginBox" Height="28" TextWrapping="Wrap" Text="Login" VerticalAlignment="Top" Margin="100,7,5,0" Background="{x:Null}" BorderBrush="#FF5F5A43" Foreground="#FF5F5A43" SelectionBrush="#FFFFAF00" VerticalContentAlignment="Center" FontFamily="Garamond" FontWeight="Bold" FontSize="14"/>
+            <TextBox x:Name="signUp_PasswordBox" Height="27" Margin="100,40,5,0" TextWrapping="Wrap" Text="Password" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="#FF5F5A43" Foreground="#FF5F5A43" SelectionBrush="#FFFFAF00" VerticalContentAlignment="Center" FontFamily="Garamond" FontWeight="Bold" FontSize="14"/>
+            <Label x:Name="signUp_LoginLabel" Content="Login" VerticalAlignment="Top" HorizontalAlignment="Left" Width="95" Height="30" FontFamily="Garamond" Background="{x:Null}" Foreground="#FF5F5A43" FontWeight="Bold" FontSize="18" Margin="5,5,0,0"/>
+            <Label x:Name="signUp_PasswordLabel" Content="Password" VerticalAlignment="Top" HorizontalAlignment="Left" Width="95" Height="32" FontFamily="Garamond" Background="{x:Null}" Foreground="#FF5F5A43" FontWeight="Bold" Margin="5,51,0,0" FontSize="18"/>
+            <Label x:Name="signUp_WrongDataLabel" Content="Wrong fields!" Margin="100,198,5,6" VerticalAlignment="Center" FontFamily="Garamond" Background="{x:Null}" Foreground="#FF703C3C" FontWeight="Bold" HorizontalContentAlignment="Center" Visibility="Hidden" FontSize="16" HorizontalAlignment="Center" Width="287"/>
+            <TextBox x:Name="signUp_ConfirmPasswordBox" Height="27" Margin="100,72,5,0" TextWrapping="Wrap" Text="Confirm password" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="#FF5F5A43" Foreground="#FF5F5A43" SelectionBrush="#FFFFAF00" VerticalContentAlignment="Center" FontFamily="Garamond" FontWeight="Bold" FontSize="14"/>
+            <TextBox x:Name="signUp_EmailBox" Height="27" Margin="100,104,5,0" TextWrapping="Wrap" Text="E-mail" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="#FF5F5A43" Foreground="#FF5F5A43" SelectionBrush="#FFFFAF00" VerticalContentAlignment="Center" FontFamily="Garamond" FontWeight="Bold" FontSize="14"/>
+            <Label x:Name="signUp_EmailLabel" Content="E-mail" VerticalAlignment="Top" HorizontalAlignment="Left" Width="95" Height="30" FontFamily="Garamond" Background="{x:Null}" Foreground="#FF5F5A43" FontWeight="Bold" FontSize="18" Margin="5,102,0,0"/>
+            <TextBox x:Name="signUp_PhoneBox" Height="27" Margin="100,136,5,0" TextWrapping="Wrap" Text="Phone" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="#FF5F5A43" Foreground="#FF5F5A43" SelectionBrush="#FFFFAF00" VerticalContentAlignment="Center" FontFamily="Garamond" FontWeight="Bold" FontSize="14"/>
+            <Label x:Name="signUp_PhoneLabel" Content="Phone" VerticalAlignment="Top" HorizontalAlignment="Left" Width="95" Height="30" FontFamily="Garamond" Background="{x:Null}" Foreground="#FF5F5A43" FontWeight="Bold" FontSize="18" Margin="5,133,0,0"/>
+            <Button x:Name="signUp_SignUpButton" Content="Sign Up" Margin="245,168,0,0" VerticalAlignment="Top" FontFamily="Garamond" FontWeight="Bold" Foreground="#FF5F5A43" Background="{x:Null}" BorderBrush="#FF5F5A43" HorizontalAlignment="Left" Width="142" RenderTransformOrigin="0.5,0.5" Height="25" FontSize="16" Click="SignUp_SignUpButton_Click"/>
+            <Button x:Name="signUp_BackButton" Content="Back to Sign In" Margin="100,168,0,0" VerticalAlignment="Top" FontFamily="Garamond" FontWeight="Bold" Foreground="#FF5F5A43" Background="{x:Null}" BorderBrush="#FF5F5A43" HorizontalAlignment="Left" Width="142" RenderTransformOrigin="0.5,0.5" Height="25" FontSize="16" Click="SignUp_BackButton_Click"/>
+
+        </Grid>
+    </Grid>
+</Window>
