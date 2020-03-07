@@ -1,3 +1,2 @@
 # GreyPine
-Bank application (demo only)
-Hi all!
+Bank application (for demonstration only).
