@@ -42,7 +42,7 @@ namespace Bank_ClientApp
             InitializeComponent();
         }
 
-        private void ConnectToServer(bool restoreObjects) //Main connection method. If you want to connect, please use this. 
+        private void ConnectToServer(bool restoreObjects) //Main connection method. If you want to connect, please use this. Fully safe method. 
         {
             if (!waitingConnection && restoreObjects)
             {
@@ -75,11 +75,8 @@ namespace Bank_ClientApp
             else
             {
                 isConnected = false;
-                var result = MessageBox.Show("No Connection! Retry?", "No Connection", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                if (result == MessageBoxResult.No)
-                    Application.Current.Shutdown();
-                else
-                    ConnectToServer(true);
+                connectionStatusLabel.Content = "No connection! Retrying...";
+                ConnectToServer(true);
             }
         }
 
@@ -94,14 +91,14 @@ namespace Bank_ClientApp
                     {
                         SendRequestToServer(0);
                     }
-                    catch (Exception)
+                    catch (SocketException)
                     {
                         break;
                     }
-                };
+            };
             });
             isConnected = false;
-            MessageBox.Show("Connection Lost! Retrying...", "Connection Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            connectionStatusLabel.Content = "Lost connection! Retrying...";
             ConnectToServer(true);
         }
 
@@ -113,46 +110,24 @@ namespace Bank_ClientApp
         /// 100 - Close connection to server.
         /// 101 - Not a request! It closes connection without end-request, so it isn't using connection.
         ///
-        public void SendRequestToServer(int requestType) //Send specific request to server if connected. 
+        public void SendRequestToServer(int requestType) //Send specific request to server if connected. Unsafe method. 
         {
-            try
-            {
-                if (requestType == 0)
-                    SocketSendStringRequest(Encryptor.EncryptString("c_check"));
-                if (requestType == 1)
-                {
-                    SocketSendStringRequest(Encryptor.EncryptString("ldc_" + loginBox.Text + "_" + passwordBox.Text + "_" + UNIQ_ID)); //login data check 
-                    string answer = SocketReceivedResponse();
-                    if (answer != "acc")
-                        wrongDataLabel.Visibility = Visibility.Visible;
-                    else
-                        MessageBox.Show("Welcome!");
-                }
-                if (requestType == 2)
-                {
-                    SocketSendStringRequest(Encryptor.EncryptString("nclient_" + signUp_LoginBox.Text + "_" + signUp_PasswordBox.Text + "_" + signUp_EmailBox.Text + "_" + signUp_PhoneBox.Text + "_" + UNIQ_ID));
-                    string answer = SocketReceivedResponse();
-                    if (answer != "acc")
-                        signUp_WrongDataLabel.Visibility = Visibility.Visible;
-                    else
-                        MessageBox.Show("Done!");
-                }
-                if (requestType == 100)
-                    SocketCloseConnectionToServer();
-                if (requestType == 101)
-                    SocketCloseConnectionToServerSilent();
-            }
-            catch (Exception) { }
+            if (requestType == 0)
+                SocketSendStringRequest(Encryptor.EncryptString("c_check"));
+            if (requestType == 1)
+                SocketSendStringRequest(Encryptor.EncryptString("ldc_" + loginBox.Text + "_" + passwordBox.Text + "_" + UNIQ_ID)); //login data check 
+            if (requestType == 2)
+                SocketSendStringRequest(Encryptor.EncryptString("nclient_" + signUp_LoginBox.Text + "_" + signUp_PasswordBox.Text + "_" + signUp_EmailBox.Text + "_" + signUp_PhoneBox.Text + "_" + UNIQ_ID));
+            if (requestType == 100)
+                SocketCloseConnectionToServer();
+            if (requestType == 101)
+                SocketCloseConnectionToServerSilent();
         }
 
-        private void SocketSendStringRequest(string text) //Socket method to put input string to byte array and send this array to server if connected. 
+        private void SocketSendStringRequest(string text) //Socket method to put input string to byte array and send this array to server if connected. Unsafe method. 
         {
             byte[] buffer = Encoding.Unicode.GetBytes(text);
-            try
-            {
-                ClientSocket.Send(buffer, 0, buffer.Length, SocketFlags.None);
-            }
-            catch (Exception) { }
+            ClientSocket.Send(buffer, 0, buffer.Length, SocketFlags.None);
         }
 
         private void SocketConnectToServer() //Socket method to try to connect to server. 
@@ -186,7 +161,7 @@ namespace Bank_ClientApp
             ClientSocket.Close();
         }
 
-        public string SocketReceivedResponse() //Socket method to write socket data to bite array and then convert to string. 
+        public string SocketReceivedResponse() //Socket method to write socket data to bite array and then convert to string. Unsafe method. 
         {
             var buffer = new byte[2048];
             int numberOfReceivedBytes = ClientSocket.Receive(buffer);
@@ -207,7 +182,22 @@ namespace Bank_ClientApp
             else
             {
                 wrongDataLabel.Visibility = Visibility.Hidden;
-                SendRequestToServer(1);
+                try
+                {
+                    SendRequestToServer(1);
+                    string answer = SocketReceivedResponse();
+                    if (answer != "acc")
+                        wrongDataLabel.Visibility = Visibility.Visible;
+                    else
+                    {
+                        CIWindow ciw = new CIWindow();
+                        ciw.myHandler = this;
+                        ciw.Show();
+                        this.ShowInTaskbar = false;
+                        this.Visibility = Visibility.Hidden;
+                    }
+                }
+                catch (Exception) { }
             }
         }
 
@@ -228,7 +218,15 @@ namespace Bank_ClientApp
                 signUp_PhoneBox.Text.All(Char.IsDigit) && !signUp_PasswordBox.Text.Contains("@") && !signUp_LoginBox.Text.Contains("@"))
             {
                 signUp_WrongDataLabel.Visibility = Visibility.Hidden;
-                SendRequestToServer(2);
+                try
+                {
+                    SendRequestToServer(2); string answer = SocketReceivedResponse();
+                    if (answer != "acc")
+                        signUp_WrongDataLabel.Visibility = Visibility.Visible;
+                    else
+                        MessageBox.Show("Done!");
+                }
+                catch (Exception) { }
             }
             else
                 signUp_WrongDataLabel.Visibility = Visibility.Visible;

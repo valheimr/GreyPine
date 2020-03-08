@@ -22,7 +22,7 @@
                 </EventTrigger>
             </Image.Triggers>
         </Image>
-        <Label x:Name="connectionStatusLabel" Content="Connecting to server..." HorizontalAlignment="Right" Margin="0,0,22,24" VerticalAlignment="Bottom" Width="207" Visibility="Hidden" FontSize="20" FontFamily="Garamond" Background="{x:Null}" Foreground="#FF5F5A43" FontWeight="Bold"/>
+        <Label x:Name="connectionStatusLabel" Content="Connecting to server..." HorizontalAlignment="Right" Margin="0,0,22,24" VerticalAlignment="Bottom" Width="275" Visibility="Visible" FontSize="20" FontFamily="Garamond" Background="{x:Null}" Foreground="#FF5F5A43" FontWeight="Bold" HorizontalContentAlignment="Right"/>
         <Grid Name="logInGrid" HorizontalAlignment="Center" Height="135" Margin="194,153,208,133" VerticalAlignment="Center" Width="392" Visibility="Hidden">
             <TextBox x:Name="loginBox" Height="28" TextWrapping="Wrap" Text="Login" VerticalAlignment="Top" Margin="100,7,5,0" Background="{x:Null}" BorderBrush="#FF5F5A43" Foreground="#FF5F5A43" SelectionBrush="#FFFFAF00" VerticalContentAlignment="Center" FontFamily="Garamond" FontWeight="Bold" FontSize="14"/>
             <TextBox x:Name="passwordBox" Height="27" Margin="100,40,5,0" TextWrapping="Wrap" Text="Password" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="#FF5F5A43" Foreground="#FF5F5A43" SelectionBrush="#FFFFAF00" VerticalContentAlignment="Center" FontFamily="Garamond" FontWeight="Bold" FontSize="14"/>
